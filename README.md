@@ -8,3 +8,10 @@ In a microservice architecture message brokers are often used to signal between 
 
 As an example microservice architecture we take the Pizza delivery app as described in the image. We are interested in measuring the flow of internal communication. In total we can observe five channels where messages flow.
 
+# Architecture
+- NGINX proxy that functions as the API gateway
+- Flask app for order, customer and delivery service
+    - Order service:
+        - 
+- MQTT broker that handels the messaging between the different services
+- Prometheus server that stores metrics from the different services
