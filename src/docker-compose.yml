@@ -1,0 +1,41 @@
+version: '3'
+services:
+  mqtt:
+    image: eclipse-mosquitto
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+    networks:
+      - pizza-app
+    # healthcheck:
+    #   test: ["CMD", "mosquitto_pub", "-h", "localhost", "-t", "healthcheck", "-m", "ok"]
+    #   interval: 5s
+    #   timeout: 30s
+    #   retries: 2
+  # consumer:
+  #   build:
+  #     context: ./consumer
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     - mqtt
+  order:
+    build:
+      context: ./order
+      dockerfile: Dockerfile
+    # depends_on:
+    #   mqtt:
+    #     condition: service_healthy
+    depends_on:
+      - mqtt
+    networks:
+      - pizza-app
+  prometheus:
+    build:
+      context: ./prometheus
+      dockerfile: Dockerfile
+    networks:
+      - pizza-app
+
+networks:
+  pizza-app:
+
+    
