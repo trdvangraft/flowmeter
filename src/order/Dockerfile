@@ -12,4 +12,6 @@ COPY order_service.py order_service.py
 RUN groupadd -r order && useradd --no-log-init -r -g order order
 USER order
 
-CMD ["python3",  "order_service.py"]
+EXPOSE 9600
+
+CMD ["python",  "./order_service.py"]

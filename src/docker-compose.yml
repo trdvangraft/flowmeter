@@ -2,15 +2,11 @@ version: '3'
 services:
   mqtt:
     image: eclipse-mosquitto
+    container_name: mqtt
     volumes:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
     networks:
       - pizza-app
-    # healthcheck:
-    #   test: ["CMD", "mosquitto_pub", "-h", "localhost", "-t", "healthcheck", "-m", "ok"]
-    #   interval: 5s
-    #   timeout: 30s
-    #   retries: 2
   # consumer:
   #   build:
   #     context: ./consumer
@@ -21,20 +17,44 @@ services:
     build:
       context: ./order
       dockerfile: Dockerfile
-    # depends_on:
-    #   mqtt:
-    #     condition: service_healthy
+    container_name: order-service
+    depends_on:
+      - mqtt
+    networks:
+      - pizza-app
+  customer:
+    build:
+      context: ./customer
+      dockerfile: Dockerfile
+    container_name: customer-service
     depends_on:
       - mqtt
     networks:
       - pizza-app
   prometheus:
-    build:
-      context: ./prometheus
-      dockerfile: Dockerfile
+    container_name: prometheus
+    image: prom/prometheus
+    command: '--config.file=/etc/prometheus/prometheus.yml'
     networks:
       - pizza-app
-
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=grafana
+    volumes:
+      - ./grafana:/etc/grafana/provisioning/datasources
+    
+volumes:
+  prometheus_data:
 networks:
   pizza-app:
 

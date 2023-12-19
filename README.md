@@ -11,7 +11,9 @@ As an example microservice architecture we take the Pizza delivery app as descri
 # Architecture
 - NGINX proxy that functions as the API gateway
 - Flask app for order, customer and delivery service
-    - Order service:
+    - Order service
+        - Handles customer orders
+        - Instructs kitchen what to bake
         - 
 - MQTT broker that handels the messaging between the different services
 - Prometheus server that stores metrics from the different services
