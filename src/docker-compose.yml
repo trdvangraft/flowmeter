@@ -45,13 +45,17 @@ services:
   grafana:
     image: grafana/grafana
     container_name: grafana
+    networks:
+      - pizza-app
     ports:
       - "3000:3000"
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=grafana
+      - GF_DASHBOARDS_JSON_ENABLED=true
     volumes:
-      - ./grafana:/etc/grafana/provisioning/datasources
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
     
 volumes:
   prometheus_data:

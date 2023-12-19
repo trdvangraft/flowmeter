@@ -7,6 +7,6 @@ scrape_configs:
   - job_name: send_message_scraper
     scrape_interval: 5s
     static_configs:
-      - targets: ['order-service:9600']
+      - targets: ['order-service:9600', 'customer-service:9600']
         labels:
           group: 'message_scraper'

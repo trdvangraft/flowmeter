@@ -1,9 +1,13 @@
 import logging
 
 from paho.mqtt.client import Client as MqttClient
+from prometheus_client import start_http_server, Counter
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+# Create a counter metric
+messages_sent = Counter(name='messages_sent', documentation='Number of messages sent', labelnames=['topic'])
+messages_received = Counter(name='messages_received', documentation='Number of messages received', labelnames=['topic'])
 class MqttBroker:
     def __init__(self, client_id: str):
         self.client = MqttClient(client_id=client_id)
@@ -18,6 +22,7 @@ class MqttBroker:
 
     def on_message(self, client, userdata, msg):
         logging.info(f"{msg.topic} {str(msg.payload)}")
+        messages_received.labels(topic=msg.topic).inc()
 
     def loop_forever(self):
         self.client.loop_forever()
@@ -36,6 +41,9 @@ def main():
     
     mqtt_broker = MqttBroker(client_id="customer_service")
     mqtt_broker.connect("mqtt", 1883, 60)
+    
+    # Start up the server to expose the metrics.
+    start_http_server(9600)
     
     topics = ["order_to_customer/#", "customer_to_delivery/#", "delivery_to_customer/#"]
     for topic in topics:
