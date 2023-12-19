@@ -14,6 +14,14 @@ As an example microservice architecture we take the Pizza delivery app as descri
     - Order service
         - Handles customer orders
         - Instructs kitchen what to bake
-        - 
+    - Customer service
+        - Keeps track of the users in the system
+        - Keeps track of the amount of money a user spent
+    - Delivery service
+        - Keeps track of the location of the delivery agent when driving to a customer
+        - Keeps track of the location of all the delivery drivers
+    - Kitchen service
+        - Keeps track of the pizza in oven
+        - Makes the pizza
 - MQTT broker that handels the messaging between the different services
 - Prometheus server that stores metrics from the different services
