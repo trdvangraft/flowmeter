@@ -22,6 +22,8 @@ services:
       - mqtt
     networks:
       - pizza-app
+    ports:
+      - "5000:5000"
   customer:
     build:
       context: ./customer

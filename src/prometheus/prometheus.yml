@@ -4,9 +4,21 @@ scrape_configs:
   - job_name: prometheus
     static_configs:
       - targets: ['prometheus:9090']
-  - job_name: send_message_scraper
+  - job_name: message_scraper
     scrape_interval: 5s
     static_configs:
       - targets: ['order-service:9600', 'customer-service:9600']
         labels:
           group: 'message_scraper'
+    metric_relabel_configs:
+    - regex: 'messages'
+      action: labelkeep
+  - job_name: endpoint_scrapper
+    scrape_interval: 5s
+    static_configs:
+    - targets: ['order-service:9600', 'customer-service:9600']
+      labels:
+        group: 'endpoint_scrapper'
+    metric_relabel_configs:
+    - regex: 'endpoint'
+      action: labelkeep
