@@ -7,17 +7,19 @@ from redis import Redis
 class ProtocolRedisRepository(Protocol):
     def get(self, key: str) -> Optional[Order]: ...
     def set(self, key: str, value: Order) -> None: ...
+    
+    
 
 class RedisRepository:
     def __init__(self, redis_client: Redis):
         self.redis_client = redis_client
     
     def get(self, key: str) -> Optional[Order]:
-        order = self.redis_client.get(key)
-        return order
+        order = self.redis_client.get(str(key))       
+        return Order.model_validate_json(order) if order else None
     
     def set(self, key: str, value: Order) -> None:
-        self.redis_client.set(key, value)
+        self.redis_client.set(str(key), value.serialize())
 
 class FakeRedisRepository:
     def __init__(self):

@@ -24,5 +24,8 @@ class Order(BaseModel):
             self.order_list[index].quantity += order_item.quantity
         else:
             self.order_list.append(order_item)
+            
+    def serialize(self) -> str:
+        return self.model_dump_json()
     
     
