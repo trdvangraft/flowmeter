@@ -4,3 +4,5 @@ prometheus_flask_exporter
 Flask
 pydantic
 pytest
+redis
+pytest-redis

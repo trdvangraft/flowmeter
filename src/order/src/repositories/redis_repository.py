@@ -2,12 +2,14 @@ from typing import Optional, Protocol
 
 from src.models import Order
 
+from redis import Redis
+
 class ProtocolRedisRepository(Protocol):
     def get(self, key: str) -> Optional[Order]: ...
     def set(self, key: str, value: Order) -> None: ...
 
 class RedisRepository:
-    def __init__(self, redis_client):
+    def __init__(self, redis_client: Redis):
         self.redis_client = redis_client
     
     def get(self, key: str) -> Optional[Order]:

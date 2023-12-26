@@ -3,3 +3,4 @@ prometheus_client
 prometheus_flask_exporter 
 Flask
 pydantic
+redis
