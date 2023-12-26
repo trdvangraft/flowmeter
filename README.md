@@ -26,3 +26,6 @@ As an example microservice architecture we take the Pizza delivery app as descri
 - MQTT broker that handels the messaging between the different services
 - Prometheus server that stores metrics from the different services
 - Grafana dashboarding that visualizes the health of the system
+
+
+/order endpoint should probably recieve a list of pizzas

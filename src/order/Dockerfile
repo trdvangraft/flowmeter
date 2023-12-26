@@ -5,6 +5,8 @@ WORKDIR /app
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
+COPY wsgi.py wsgi.py
+COPY config.py config.py
 COPY ./src ./src
 # COPY ../shared .
 
@@ -14,4 +16,4 @@ USER order
 
 EXPOSE 9600
 
-CMD ["python",  "./src/order_service.py"]
+CMD ["python",  "wsgi.py"]
