@@ -1,0 +1,5 @@
+paho-mqtt
+prometheus_client
+prometheus_flask_exporter 
+pydantic
+redis

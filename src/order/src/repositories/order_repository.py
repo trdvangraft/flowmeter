@@ -1,16 +1,15 @@
 from typing import Optional, Protocol
 
 from src.models import Order
+from src.clients.redis_client import redis_client
 
 from redis import Redis
 
-class ProtocolRedisRepository(Protocol):
+class ProtocolOrderRepository(Protocol):
     def get(self, key: str) -> Optional[Order]: ...
     def set(self, key: str, value: Order) -> None: ...
     
-    
-
-class RedisRepository:
+class OrderRepository:
     def __init__(self, redis_client: Redis):
         self.redis_client = redis_client
     
@@ -21,7 +20,7 @@ class RedisRepository:
     def set(self, key: str, value: Order) -> None:
         self.redis_client.set(str(key), value.serialize())
 
-class FakeRedisRepository:
+class FakeOrderRepository:
     def __init__(self):
         self.orders = {}
     
@@ -31,4 +30,6 @@ class FakeRedisRepository:
     
     def set(self, key: str, value: Order) -> None:
         self.orders[key] = value
-    
+
+FAKE_ORDER_REPOSITORY = FakeOrderRepository()
+ORDER_REPOSITORY = OrderRepository(redis_client=redis_client)

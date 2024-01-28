@@ -7,6 +7,8 @@ services:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
     networks:
       - pizza-app
+    ports:
+     - "1883:1883"
   order:
     build:
       context: ./order
@@ -26,6 +28,15 @@ services:
       - order-network
     ports:
       - "6379:6379"
+  kitchen:
+    build:
+      context: ./kitchen
+      dockerfile: Dockerfile
+    container_name: kitchen-service
+    depends_on:
+      - mqtt
+    networks:
+      - pizza-app
   customer:
     build:
       context: ./customer

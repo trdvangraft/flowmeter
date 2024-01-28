@@ -1,7 +1,7 @@
 from flask import Flask
 from src.clients import init_redis, init_mqtt, metrics
 
-def init_app():
+def init_app() -> Flask:
     app = Flask(__name__, instance_relative_config=False)
     app.config.from_object('config.Config')
        

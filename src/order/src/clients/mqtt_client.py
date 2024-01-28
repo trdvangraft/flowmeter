@@ -7,6 +7,11 @@ def init_mqtt(app):
     mqtt_client = MqttClient(
         client_id=app.config['MQTT_CLIENT_ID']
     )
+    mqtt_client.connect(
+        host=app.config['MQTT_HOST'],
+        port=app.config['MQTT_PORT'],
+        keepalive=app.config['MQTT_KEEPALIVE']
+    )
     
 
 # class MqttBroker:
